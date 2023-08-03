@@ -8,6 +8,7 @@ import ru.netology.BDD.page.LoginPage;
 
 import java.time.Duration;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,8 +69,10 @@ public class TransferTest {
         $("[data-test-id='amount'] input").setValue("5000");
         $("[data-test-id='from'] input").setValue("5559000000000003");
         $("[data-test-id='action-transfer']").click();
-        $("[data-test-id='error-notification']").shouldHave(Condition.exactText("Ошибка\n" +
-                "Ошибка! Произошла ошибка"), Duration.ofSeconds(3));
+        $("[data-test-id='error-notification']")
+                .shouldBe(visible, Duration.ofSeconds(5))
+                .shouldHave(Condition.exactText("Ошибка\n" +
+                        "Ошибка! Произошла ошибка"), Duration.ofSeconds(5));
     }
 
 }
