@@ -8,7 +8,6 @@ import ru.netology.BDD.page.LoginPage;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,22 +44,22 @@ public class TransferTest {
 
     }
 
-//    @Test
-//    void shouldGetErrorMessageIfAmountMoreBalance() {
-//        var firstCardInfo = getFirstCardInfo();
-//        var secondCardInfo = getSecondCardInfo();
-//        var firstCardBalance = dashboardPage.getCardBalance(firstCardInfo);
-//        var secondCardBalance = dashboardPage.getCardBalance(secondCardInfo);
-//        var amount = generateInvalidAmount(firstCardBalance);
-//        var transferPage = dashboardPage.selectCardToTransfer(secondCardInfo);
-//        transferPage.makeTransfer(String.valueOf(amount), firstCardInfo);
-//        transferPage.findErrorMessage("Сумма пополнения превышает остаток на карте списания");
-//        var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCardInfo);
-//        var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCardInfo);
-//        assertEquals(firstCardBalance, actualBalanceFirstCard);
-//        assertEquals(secondCardBalance, actualBalanceSecondCard);
-//
-//    }
+    @Test
+    void shouldGetErrorMessageIfAmountMoreBalance() {
+        var firstCardInfo = getFirstCardInfo();
+        var secondCardInfo = getSecondCardInfo();
+        var firstCardBalance = dashboardPage.getCardBalance(firstCardInfo);
+        var secondCardBalance = dashboardPage.getCardBalance(secondCardInfo);
+        var amount = generateInvalidAmount(firstCardBalance);
+        var transferPage = dashboardPage.selectCardToTransfer(secondCardInfo);
+        transferPage.makeTransfer(String.valueOf(amount), firstCardInfo);
+        transferPage.findErrorMessage("Сумма пополнения превышает остаток на карте списания");
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCardInfo);
+        var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCardInfo);
+        assertEquals(firstCardBalance, actualBalanceFirstCard);
+        assertEquals(secondCardBalance, actualBalanceSecondCard);
+
+    }
 
     @Test
     void shouldGetErrorMessageIfInvalidCard() { // некорректно указана карта-источник
