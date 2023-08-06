@@ -17,6 +17,10 @@ public class TransferPage {
     private final SelenideElement transferHead = $(byText("Пополнение карты"));
     private final SelenideElement errorMessage = $("[data-test-id='action-cancel']");
 
+    private final SelenideElement errorNotification = $("[data-test-id='error-notification']");
+
+    private final SelenideElement cancel = $("[data-test-id='action-cancel']");
+
     public TransferPage() {
         transferHead.shouldBe(visible);
     }
@@ -36,5 +40,12 @@ public class TransferPage {
         errorMessage.shouldHave(exactText(expectedText), Duration.ofSeconds(15)).shouldBe(visible);
     }
 
+    public void findErrorNotification(String expectedText) {
+        errorNotification.shouldHave(exactText(expectedText), Duration.ofSeconds(5)).shouldBe(visible);
+    }
+
+    public void findCancel() {
+        cancel.click();
+    }
 }
 

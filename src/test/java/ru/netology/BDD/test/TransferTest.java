@@ -1,15 +1,10 @@
 package ru.netology.BDD.test;
 
-import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.BDD.page.DashboardPage;
 import ru.netology.BDD.page.LoginPage;
 
-import java.time.Duration;
-
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.BDD.data.DataHelper.*;
@@ -63,16 +58,23 @@ public class TransferTest {
     }
 
     @Test
-    void shouldGetErrorMessageIfInvalidCard() { // некорректно указана карта-источник
+    void shouldGetErrorMessageIfThirdInvalidCard() { // некорректно указана карта-источник
+        var firstCardInfo = getFirstCardInfo();
+        var secondCardInfo = getSecondCardInfo();
+        var thirdCardInfo = getThirdCardInfo();
+        var firstCardBalance = dashboardPage.getCardBalance(firstCardInfo);
+        var secondCardBalance = dashboardPage.getCardBalance(secondCardInfo);
+        var amount = generateValidAmount(secondCardBalance);
+        var transferPage = dashboardPage.selectCardToTransfer(firstCardInfo);
+        transferPage.makeTransfer(String.valueOf(amount), thirdCardInfo);
+        transferPage.findErrorNotification("Ошибка\n" +
+                "Ошибка! Произошла ошибка");
+        transferPage.findCancel(); // жмём "Отмену" чтобы вернуться на страницу с картами для проверки баланса
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCardInfo);
+        var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCardInfo);
+        assertEquals(firstCardBalance, actualBalanceFirstCard);
+        assertEquals(secondCardBalance, actualBalanceSecondCard);
 
-        $("[data-test-id='action-deposit']").click();
-        $("[data-test-id='amount'] input").setValue("5000");
-        $("[data-test-id='from'] input").setValue("5559000000000003");
-        $("[data-test-id='action-transfer']").click();
-        $("[data-test-id='error-notification']")
-                .shouldBe(visible, Duration.ofSeconds(5))
-                .shouldHave(Condition.exactText("Ошибка\n" +
-                        "Ошибка! Произошла ошибка"), Duration.ofSeconds(5));
     }
 
 }
